@@ -34,7 +34,7 @@ getIsotopes = function(x){
   getPeaklist(an)
  }
 
-pl = getPeakList(xs)\n
+pl = getPeakList(xs)
 write.csv(file="isotopes.cam.csv",pl)
 
 #5. Convert camera file to query list

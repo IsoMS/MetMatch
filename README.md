@@ -1,8 +1,5 @@
 # MetMatch
-Reference-style: 
-![alt text][logo]
-
-[logo]: logo.png "logo"
+<img src="logo.png" width="600px"/>
 
 MS1 Global Search Engine for Feature to Formula Matching 
 

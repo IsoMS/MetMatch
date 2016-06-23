@@ -1,7 +1,7 @@
 
 <img src="logo.png" width="600px"/>
 
-MS1 Global Search Engine for Feature to Formula Matching 
+##MS1 Global Search Engine for Feature to Formula Matching 
 
 MetMatch is a MS1 search engine for global mass spectrometry feature to formula matching. MetMatch takes as input a user supplied list of formula and features produced from the XCMS/CAMERA feature finding  and isotope annotation software.  Included are methods to build a target feature library (TFL), preprocessing routines, running the metmatch algorithm, and postprocessing routines. In this vignette you will find a generic workflow for analyzing the data produced from a replicate mass spectrometry experiment.
 
@@ -134,7 +134,7 @@ cameraFiles = dir(pattern="\\.cam.csv$",full.names=T)
 Q = lapply(cameraFiles, function(x) convert.camera.file(x,1))
 ```
 #####Running MetMatch
-MetMatch requires the user to set the ppm and intensity tolerances.  The most important setting here is the mass setting.  To model delta mass and delta intensities correctly, use a wide enough mass tolerance to help model incorrect matches. FOr example, in QTOF data metabolites with mass error of less than 10ppm are routinely acquired, however we use a 50ppm mass tolerance window.  Intensity tolerances are on a scale of 0-1, and a setting of 0.5 will work for most data.  MetMatch takes as input the query list of experiemntal isotopes (Q), and the target feature library. Please see the manual for details on specific settings in the MetMatch function.
+MetMatch requires the user to set the ppm and intensity tolerances.  The most important setting here is the mass setting.  To model delta mass and delta intensities correctly, use a wide enough mass tolerance to help model incorrect matches. For example, in QTOF data metabolites with mass error of less than 10ppm are routinely acquired, however we use a 50ppm mass tolerance window.  Intensity tolerances are on a scale of 0-1, and a setting of 0.5 will work for most data.  MetMatch takes as input the query list of experiemntal isotopes (Q), and the target feature library. Please see the manual for details on specific settings in the MetMatch function.
 
 First convert the CAMERA files and load into a list of query objects:
 

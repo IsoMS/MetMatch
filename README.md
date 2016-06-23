@@ -1,4 +1,9 @@
 # MetMatch
+Reference-style: 
+![alt text][logo]
+
+[logo]: logo.png "logo"
+
 MS1 Global Search Engine for Feature to Formula Matching 
 
 MetMatch is a MS1 search engine for global mass spectrometry feature to formula matching. MetMatch takes as input a user supplied list of formula and features produced from the XCMS/CAMERA feature finding  and isotope annotation software.  Included are methods to build a target feature library (TFL), preprocessing routines, running the metmatch algorithm, and postprocessing routines. In this vignette you will find a generic workflow for analyzing the data produced from a replicate mass spectrometry experiment.

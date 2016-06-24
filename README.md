@@ -19,36 +19,17 @@ For those wanting to dive in, the following commands should allow you to quickly
 #1. Read the list of formulae to build the TFL
 formulae = read.delim("formulae.txt")
 
-
 #2. Build the TFL (database)
-TFL = build.TFL.emass(k=6,formulae)
+TFL = build.DB.emass(k=6,formulae)
 
-#3. run XCMS, enter your own mzXML file
-xs = xcmsSet("data.mzXML",method="massifquant",withWave=1,ppm=10,
-              prefilter=c(3,300),peakwidth=c(3,45),snthresh=1.25)
+#3. run XCMS/CAMERA:
+wd = "<Path to your folder containing the mzxml file(s)>"
+run.CAMERA(wd)
 
+#4. Run MetMatch!
+run.metmatch(wd,DB)
 
-
-#4. Run CAMERA to annotate isotopes
-
-#Wrapper function
-getIsotopes = function(x){
-  require(CAMERA)
-  an = xsAnnotate(x)
-  an = groupFWHM(an,sigma=3)
-  an = findIsotopes(an,maxiso=6, ppm=5, mzabs=0.02)
-  an = groupCorr(an,calcIso=TRUE)
-  getPeaklist(an)
- }
-
-pl = getPeakList(xs)
-write.csv(file="isotopes.cam.csv",pl)
-
-#5. Convert camera file to query list
-Q = convert.camera.file("isotopes.cam.csv",1)
-
-#6. Run MetMatch!
-res = metmatch(Q.data,TFL,score.method="best",run.type="nodecoy",out.file.name="results")
+#5. View your results files!
 ```
 
 ###2. Target Feature Library
@@ -88,77 +69,19 @@ C3H10N2	74.08384	5	78.0911	0
 ```
 
 ###3. MS Data Preprocessing
-#####Peak finding with XCMS
-By this time in the data analysis, the user will preprocess data to find isotopic clusters (features).  It is recommended to use the ProteoWizard MSConvert.exe tool to convert to mzXML. The pipeline is run using mzXML formatted files, but it is assumed that anyformat compatible with XCMS can be used.  Once peak finding is completed, the resultant peaks are grouped into isotope clusters using CAMERA. These steps by far are the most time consuming steps in the MetMatch pipeline.
+#####Peak finding with XCMS/CAMERA
+By this time in the data analysis, the user will preprocess data to find isotopic clusters (features).  It is recommended to use the ProteoWizard MSConvert.exe tool to convert to mzXML. The pipeline is run using mzXML formatted files, but it is assumed that anyformat compatible with XCMS can be used.  Once peak finding is completed, the resultant peaks are grouped into isotope clusters using CAMERA. The user is expected to have some working knwoledge of the settings in CAMERA.  The peaklists are written to a csv file and can be analyzed later with the MetMatch algorithm.  These steps by far are the most time consuming steps in the MetMatch pipeline.  We provide a wrapper function to perform this task.
 
 ```
-mzxml = dir("HEK293_DATA",pattern=".mzXML$",full.names=T)
-mzxml
 
-# Single sample
-xs = xcmsSet(mzxml,method="massifquant",withWave=1,ppm=10,
-              prefilter=c(3,300),peakwidth=c(3,45),snthresh=1.25)
-
-# Multiple samples
-# Use lapply for more than one sample
-#   (or alternatively multi thread using mclapply)
-xs  = mclapply(mzxml,function(x) xcmsSet(x,method="massifquant",
-            withWave=1,ppm=10,prefilter=c(3,300),peakwidth=c(3,45),
-            snthresh=1.25),nCore=6)
-```
-
-At this time the XCMS set is ready for feature finding using the CAMERA package.
-
-#####Finding isotope clusters with CAMERA
-The next step involves using a wrapper function to find isotopes in the dataset. The user is expected to have some working knwoledge of the settings in CAMERA.  The peaklists are written to a csv file and can be analyzed later with the MetMatch algorithm.
-
-```
-getIsotopes = function(x){
- require(CAMERA)
- an <- xsAnnotate(x)
- an = groupFWHM(an,sigma=3)
- an = findIsotopes(an,maxiso=6, ppm=5, mzabs=0.02)
- an = groupCorr(an,calcIso=TRUE)
- getPeaklist(an)
-}
-
-pl = mclapply(xs,function(x)getIsotopes(x),nCore=6)
-filenames  = sub(".mzXML",".cam.csv",mzxml)
-i=1
-for(p in pl){
-  write.csv(file = filenames[i],p)
-  i=i+1
-}
 ```
 
 ### 4. Performing Feature to Formula Matching (FFM) using the MetMatch search engine
-After data preprocessing, the features have been written to comma delimited format (.csv) and are ready to read and convert to a format that MetMatch can search. This is a simple, two step process: 1) read and convert the CAMERA output to a list of query features containing isotopic masses and intensities, and 2)Run the metmatch algorithm.
-
-#####Convert the CAMERA output to queryable features
-convert.camera.file is a function that will read and convert the csv file.
-```
-cameraFiles = dir(pattern="\\.cam.csv$",full.names=T)
-Q = lapply(cameraFiles, function(x) convert.camera.file(x,1))
-```
-#####Running MetMatch
-MetMatch requires the user to set the ppm and intensity tolerances.  The most important setting here is the mass setting.  To model delta mass and delta intensities correctly, use a wide enough mass tolerance to help model incorrect matches. For example, in QTOF data metabolites with mass error of less than 10ppm are routinely acquired, however we use a 50ppm mass tolerance window.  Intensity tolerances are on a scale of 0-1, and a setting of 0.5 will work for most data.  MetMatch takes as input the query list of experiemntal isotopes (Q), and the target feature library. Please see the manual for details on specific settings in the MetMatch function.
-
-First convert the CAMERA files and load into a list of query objects:
+After data preprocessing, the features have been written to comma delimited format (.csv) and are ready to read and convert to a format that MetMatch can search. This is a simple, two step process: 1) read and convert the CAMERA output to a list of query features containing isotopic masses and intensities, and 2)run the metmatch algorithm.   We provide a wrapper function to perform these steps.
+MetMatch give the option for the user to set the ppm and intensity tolerances.  The most important setting here is the mass setting.  To model delta mass and delta intensities correctly, use a wide enough mass tolerance to help model incorrect matches. For example, in QTOF data metabolites with mass error of less than 10ppm are routinely acquired, however we use a default 50ppm mass tolerance window.  Intensity tolerances are on a scale of 0-1, and the default setting of 0.5 will work for most data.  MetMatch takes as input the query list of experiemntal isotopes (Q), and the target feature library. Please see the manual for details on specific settings in the MetMatch function.
 
 ```
-cameraFiles = dir(pattern="\\.cam.csv$",full.names=T)
-Q = lapply(cameraFiles, function(x) convert.camera.file(x,1))
-```
-
-Then run MetMatch:
-```
-filenames = sub(".cam.csv","",cameraFiles)
-res = list()
-i=1
-for(Q.data in Q){
-   res[[i]] = metmatch(Q.data,TFL,score.method="best",score.type="nodecoy",out.file.name=filenames[i])
-   i=i+1
-}
+run.metmatch(wd,DB)
 ```
 
 

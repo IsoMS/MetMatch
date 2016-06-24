@@ -7,8 +7,8 @@ MetMatch is a MS1 search engine for global mass spectrometry feature to formula 
 
 ##Installation
 After downloading the compressed archive (tar.gz), install with R as you would any other package:
-```
 
+```
 install.packages(path_to_file, repos = NULL, type="source")
 ```
 
@@ -73,7 +73,7 @@ C3H10N2	74.08384	5	78.0911	0
 By this time in the data analysis, the user will preprocess data to find isotopic clusters (features).  It is recommended to use the ProteoWizard MSConvert.exe tool to convert to mzXML. The pipeline is run using mzXML formatted files, but it is assumed that anyformat compatible with XCMS can be used.  Once peak finding is completed, the resultant peaks are grouped into isotope clusters using CAMERA. The user is expected to have some working knwoledge of the settings in CAMERA.  The peaklists are written to a csv file and can be analyzed later with the MetMatch algorithm.  These steps by far are the most time consuming steps in the MetMatch pipeline.  We provide a wrapper function to perform this task.
 
 ```
-
+run.CAMERA(wd)
 ```
 
 ### 4. Performing Feature to Formula Matching (FFM) using the MetMatch search engine

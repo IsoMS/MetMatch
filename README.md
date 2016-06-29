@@ -102,6 +102,11 @@ run.metmatch(wd,TFL,run.type="decoy")
 ```
 
 Or optionally, for advanced users who want fine grain control over the metmatch algorithm:
+```
+metmatch = function(Q.data,TFL,run.type = "decoy",out.file.name)
+```
+Additional options can be read about using the R help pages for this function.
+
 
 
 

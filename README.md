@@ -105,10 +105,22 @@ Or optionally, for advanced users who want fine grain control over the metmatch 
 ```
 metmatch = function(Q.data,TFL,run.type = "decoy",out.file.name)
 ```
-Additional options can be read about using the R help pages for this function.
+-->Cutoff scores produced will be in the cutoffs.txt file.
 
+### 6. Interpreting search results
+MetMatch produces a table of results together with a plot or results for visualizing the delta models and the final score.  The tables are fairly comprehensive, however the most important columns to the typical experimentor will be the "query" ion, mz, and retention time, assigned formula, and the relevant score.  These tables are indicated with the extenstion ".metab.csv".   
+#####Plots
+Four diagnostic plots are included. The first two (A and B) are plots of the delta isotope masses and delta isotope intensities from the entire sample.   These have a Laplace distribution fit to them.  They indicate nearest the peak which FFMs are likely "good" FFMs versus the rest which are bad. The log ratio score for each FFM is computed from this distribution over the mean of the remaining "bad" delta masses and intensities.   The third plot (C) shows a heatmap distribution of these scores, which when added become the feature's final score. The final distribution of scores (D) for a sample are shown.  When the "decoy" option is run, the decoy FFMs (indicating a false hit) are shown as "+"'s in plot C and are used to compute the FDR and derive a cutoff score for 1 and 5% FDR (red dash lines in plot D).
 
+###Plot A. Delta Masses
+<img src="A.png" width="600px"/>
 
+###Plot B. Delta Intensities
+<img src="B.png" width="600px"/>
 
+###Plot C.  Mass Scores vs. Intensity Scores
+<img src="C.png" width="600px"/>
 
+###Plot D. Distribution of FFM scores with smooth line fitted (blue)
+<img src="D.png" width="600px"/>
 

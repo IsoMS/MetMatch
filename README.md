@@ -111,6 +111,7 @@ metmatch = function(Q.data,TFL,run.type = "decoy",out.file.name)
 MetMatch produces a table of results together with a plot or results for visualizing the delta models and the final score.  The tables are fairly comprehensive, however the most important columns to the typical experimentor will be the "query" ion, mz, and retention time, assigned formula, and the relevant score.  These tables are indicated with the extenstion ".metab.csv".   
 #####Tables
 Below is 3 lines from the top hits of a search result contained in a "metab.csv" file.   Q stands for "query" or the experimental ion matched against the TFL.   The type of ion detected, it's mass and rt and total intensity is copied to the search output.  The FFMs are sometimes several per ion, with the highest scoring FFM presented as the *best.hit .  The FFMs DB indexes and formulae are shown, and are followed by the scores.  The independent mass and intensity scores as well as the final scores are shown. 
+
 index.Q | ion.Q | exactMass.Q | rt.Q | intensity | index.DB | hit.DB | ... | score.mass.Q	| score.int.Q	| score.Q	| best.hit
 ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | -----
 1557|M+H|720.590851|166.809|1308855.385|10756;10844|C40H82NO7P;C41H86NO6P|...|12.26601007|8.441255533|20.7072656|C40H82NO7P

@@ -1,5 +1,5 @@
 
-<img src="logo.png" width="600px"/>
+<img src="/images/logo.png" width="600px"/>
 
 ##MS1 Global Search Engine for Feature to Formula Matching 
 
@@ -129,7 +129,7 @@ Plot A. Delta Masses  | Plot B. Delta Intensities
 
 Plot C.  Mass Scores vs. Intensity Scores|Plot D. Distribution of FFM scores with smooth line fitted (blue)
 --------------- | ----------------
-<img src="C.png" width="300px"/>|<img src="D.png" width="225px"/>
+<img src="/images/C.png" width="300px"/>|<img src="/images/D.png" width="225px"/>
 
 
 ### 7. Aligning results from multiple samples  
@@ -162,7 +162,7 @@ plotHeatMap(results$scores,which="score",name="aligned_heatmap_SCORES.png")
 
 Aligned Scores|Aligned Intensities
 --------------- | ----------------
-<img src="score_mat.png" width="400px"/>|<img src="int_mat.png" width="400px"/>
+<img src="/images/score_mat.png" width="400px"/>|<img src="/images/int_mat.png" width="400px"/>
 
 
 #CONCLUSION

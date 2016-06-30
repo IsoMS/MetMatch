@@ -151,7 +151,14 @@ ID|M|rt|int|cv.int|formula|score|cv.score|n.samples|r001.metab.csv|r002.metab.cs
 768.5536@97.104|768.5536|97.104|31742.2|4.62|C43H78NO8P_1|16.34|81.92|9|30703.91272|33240.90292|32650.57507|...
 863.5645@49.022|863.5645|49.022|41230.9|4.73|C45H83O13P|16.08|59.99|9|41450.61353|41800.97931|45552.54431|...
 
+#### HeatMap of merged data:
+Finally, you can visualize the relative distribution of intensities and scores as aligned using the previous functions.  The rest is up to the user/scientist to determine how best to analyze their data further, but metmatch to this point provides accurate Feature to Formulae matching.  
 
+To plot the features using the FFM information:
+```
+plotHeatMap(results$intensities,which="intensity", name="aligned_heatmap_INTENSITIES.png")
+plotHeatMap(results$scores,which="score",name="aligned_heatmap_SCORES.png")
+```
 
 Aligned Scores|Aligned Intensities
 --------------- | ----------------

@@ -132,7 +132,8 @@ Plot C.  Mass Scores vs. Intensity Scores|Plot D. Distribution of FFM scores wit
 <img src="C.png" width="300px"/>|<img src="D.png" width="225px"/>
 
 
-
+### 7. Aligning results from multiple samples  
+In our study, we searched multiple samples which were aligned together based on their FFM and retention time, and extraction type. This was because all were derived from the same cell line (HEK293).  The user will want to keep alignment of the data in groups determined by the extraction type and type of chromatographic separation completed in the experiment (eg. do NOT align C18 data with HILIC data).  We provide several postprocessing functions and a wrapper function to align your data.   The user will want some knowledge of the reproducibility of their chromatographic separations and subsequent MS data runs.  This will enable correct selection of the RT window for clustering of FFMs from the multiple samples.  The result of this workflow is a table of  aligned FFMS, and there is also a ploting function to visualiZe the distribution of scores and intensities in a heatmap.
 
 
 

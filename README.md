@@ -134,11 +134,29 @@ Plot C.  Mass Scores vs. Intensity Scores|Plot D. Distribution of FFM scores wit
 
 ### 7. Aligning results from multiple samples  
 In our study, we searched multiple samples which were aligned together based on their FFM and retention time, and extraction type. This was because all were derived from the same cell line (HEK293).  The user will want to keep alignment of the data in groups determined by the extraction type and type of chromatographic separation completed in the experiment (eg. do NOT align C18 data with HILIC data).  We provide several postprocessing functions and a wrapper function to align your data.   The user will want some knowledge of the reproducibility of their chromatographic separations and subsequent MS data runs.  This will enable correct selection of the RT window for clustering of FFMs from the multiple samples.  The result of this workflow is a table of  aligned FFMS, and there is also a ploting function to visualiZe the distribution of scores and intensities in a heatmap.
+Alinging samples is easy, with just one set of commands:
+```
+wd = <relative or full path to .matab.csv files>
+results = align.MetMatchResults(wd,maxRtDiff=20,cutoff=1,N=1)
+```
+These command produce the tabe of merged scores and intensities between samples: 
+##### Table of merged data:
+
+ID|M|rt|int|cv.int|formula|score|cv.score|n.samples|r001.metab.csv|r002.metab.csv|r003.metab.csv|...
+----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | -----
+720.5913@166.947|720.5913|166.947|1303148.9|2.14|C40H82NO7P_1|18.75|33.73|10|1305446.52|1322333.483|1328024.739|...
+690.5071@88.719|690.5071|88.719|55103.6|3.26|C37H72NO8P_1|17.94|21.59|2|53832.8515| | |...		
+706.5397@163.151|706.5397|163.151|3626055.3|1.34|C38H76NO8P_1|16.91|50.01|10|3693877.078|3649969.047|3665835.568|...
+577.5198@48.066|577.5198|48.066|191926.6|3.29|C37H68O4_1|16.46|33.85|10|179228.4324|189135.7611|200455.9577|...
+768.5536@97.104|768.5536|97.104|31742.2|4.62|C43H78NO8P_1|16.34	81.92|9|30703.91272|33240.90292|32650.57507|...
+863.5645@49.022|863.5645|49.022|41230.9|4.73|C45H83O13P|16.08|59.99|9|41450.61353|41800.97931|45552.54431|...
+
 
 
 Aligned Scores|Aligned Intensities
 --------------- | ----------------
 <img src="score_mat.png" width="400px"/>|<img src="int_mat.png" width="400px"/>
+
 
 
 

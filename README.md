@@ -124,7 +124,7 @@ Four diagnostic plots are included. The first two (A and B) are plots of the del
  
 Plot A. Delta Masses  | Plot B. Delta Intensities
 --------------- | ----------------
-<img src="A.png" width="300px"/>|<img src="B.png" width="300px"/>
+<img src="/images/A.png" width="300px"/>|<img src="/images/B.png" width="300px"/>
 
 
 Plot C.  Mass Scores vs. Intensity Scores|Plot D. Distribution of FFM scores with smooth line fitted (blue)

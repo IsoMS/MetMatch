@@ -113,14 +113,14 @@ MetMatch produces a table of results together with a plot or results for visuali
 Four diagnostic plots are included. The first two (A and B) are plots of the delta isotope masses and delta isotope intensities from the entire sample.   These have a Laplace distribution fit to them.  They indicate nearest the peak which FFMs are likely "good" FFMs versus the rest which are bad. The log ratio score for each FFM is computed from this distribution over the mean of the remaining "bad" delta masses and intensities.   The third plot (C) shows a heatmap distribution of these scores, which when added become the feature's final score. The final distribution of scores (D) for a sample are shown.  When the "decoy" option is run, the decoy FFMs (indicating a false hit) are shown as "+"'s in plot C and are used to compute the FDR and derive a cutoff score for 1 and 5% FDR (red dash lines in plot D).
 
 ####Plot A. Delta Masses
-<img src="A.png" width="600px"/>
+<img src="A.png" width="400px"/>
 
 ####Plot B. Delta Intensities
-<img src="B.png" width="600px"/>
+<img src="B.png" width="400px"/>
 
 ####Plot C.  Mass Scores vs. Intensity Scores
-<img src="C.png" width="600px"/>
+<img src="C.png" width="400px"/>
 
 ####Plot D. Distribution of FFM scores with smooth line fitted (blue)
-<img src="D.png" width="600px"/>
+<img src="D.png" width="400px"/>
 

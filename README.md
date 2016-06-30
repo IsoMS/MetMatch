@@ -139,7 +139,7 @@ Alinging samples is easy, with just one set of commands:
 wd = <relative or full path to .matab.csv files>
 results = align.MetMatchResults(wd,maxRtDiff=20,cutoff=1,N=1)
 ```
-These command produce the tabe of merged scores and intensities between samples: 
+These command produce the tabel of merged scores and intensities between samples: 
 ##### Table of merged data:
 
 ID|M|rt|int|cv.int|formula|score|cv.score|n.samples|r001.metab.csv|r002.metab.csv|r003.metab.csv|...

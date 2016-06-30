@@ -165,6 +165,9 @@ Aligned Scores|Aligned Intensities
 <img src="score_mat.png" width="400px"/>|<img src="int_mat.png" width="400px"/>
 
 
+#CONCLUSION
+MetMatch provides feature to formula matching in a global analysis framework.   The algorithm provides rapid formulae assignments per sample.  Each feature in the sample is interrogated independently (no prior alingments and analysis like current tools) and are aligned after the MS1 search.   The FDR is estimated per sample using a novel application of a decoy database aiding the user in selecting a minimum cutoff score.
+
 
 
 

@@ -123,6 +123,19 @@ Plot C.  Mass Scores vs. Intensity Scores|Plot D. Distribution of FFM scores wit
 <img src="C.png" width="300px"/>|<img src="D.png" width="225px"/>
 
 
+index.Q | ion.Q | exactMass.Q | rt.Q | intensity | index.DB | hit.DB | ... | score.mass.Q	| score.int.Q	| score.Q	| best.hit
+----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | ----- | -----
+1557|M+H|720.590851|166.809|1308855.385|10756;10844|C40H82NO7P;C41H86NO6P|...|12.26601007|8.441255533|20.7072656|C40H82NO7P
+1622|M+H|706.5395207|163.312|3614270.539|1949;10765|C38H76NO8P;C39H80NO7P|...|9.566656057|9.167408573|18.73406463|C38H76NO8P
+1844|M+H|792.5528487|89.386|15171.64471|1999;2057;2948;11015|C45H78NO8P;C46H82NO7P;C42H82NO10P;C44H74NO9P|...|11.93744504|6.768302973|18.70574801|C45H78NO8P
+
+
+
+
+
+
+
+
 
 
 

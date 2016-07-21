@@ -110,7 +110,7 @@ metmatch = function(Q.data,TFL,run.type = "decoy",out.file.name)
 -->Cutoff scores produced will be in the cutoffs.txt file.
 
 ### 6. Interpreting search results
-MetMatch produces a table of results together with a plot or results for visualizing the delta models and the final score.  The tables are fairly comprehensive. However the most important columns to the typical experimentor will be the "query" ion, mz, and retention time, assigned formula, and the relevant score.  These tables are indicated with the extenstion ".metab.csv".   At this point, the user maps the best formula to all possible compound names in their database, and is at an advantage if they have coacquired MS2 data.
+MetMatch produces a table of results together with a plot of results for visualizing the delta models and the final score.  The tables are fairly comprehensive. However the most important columns to the typical experimentor will be the "query" ion, mz, and retention time, assigned formula, and the relevant score.  These tables are indicated with the extenstion ".metab.csv".   At this point, the user maps the best formula to all possible compound names in their database, and is at an advantage if they have coacquired MS2 data.
 #####Tables
 Below is 3 lines from the top hits of a search result contained in a "metab.csv" file.   Q stands for "query" or the experimental ion matched against the TFL.   The type of ion detected, it's mass and rt and total intensity is copied to the search output.  The FFMs are sometimes several per ion, with the highest scoring FFM presented as the *best.hit .  The FFMs DB indexes and formulae are shown, and are followed by the scores.  The independent mass and intensity scores as well as the final scores are shown. 
 

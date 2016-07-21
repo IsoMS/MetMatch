@@ -3,9 +3,9 @@
 
 ##MS1 Global Search Engine for Feature to Formula Matching 
 
-MetMatch is a MS1 search engine for global mass spectrometry feature to formula matching, developed by Scott Walmsley,PhD (University of Colorado-Anschutz Medical School) and Hyungwon Choi,PhD (National University of Singapore School of Public Heatlh).  MetMatch takes as input a user supplied list of formula and features produced from the XCMS/CAMERA feature finding  and isotope annotation software.  Included are methods to build a target feature library (TFL), preprocessing routines, running the metmatch algorithm, and postprocessing routines. In this vignette you will find a generic workflow for analyzing the data produced from a replicate mass spectrometry experiment.
+MetMatch is a MS1 search engine for global mass spectrometry feature to formula matching, developed by Scott Walmsley,PhD (University of Colorado-Anschutz Medical School) and Hyungwon Choi,PhD (National University of Singapore School of Public Heatlh).  MetMatch takes as input a user supplied list of formula and annotated features produced from the XCMS/CAMERA feature finding  and isotope annotation software.  Included are methods to build a target feature library (TFL), preprocessing routines, running the MetMatch algorithm, and postprocessing routines. In this vignette you will find a generic workflow for analyzing the data produced from a replicate mass spectrometry experiment.  In replicate mass spectrometry experiments, each sample is independently and rapidly searched for correct formula matching (no prior feature alignments necessary like current tools) and are aligned after the MS1 search.   The FDR is estimated per sample using a ***novel application of a decoy database*** aiding the user in selecting a minimum cutoff score. Additionally, this protocol can be run for MS1 data acquired in MS1 only mode, or for simultaneous acquired MS1 and MS2 data (MetMatch only searched the MS1 data) as demonstrated in our co-submitted MetaboDIA software framework (Genbo et.al, manuscript pending). In this approach, the coacquired MS2 structural data were demonstrated to have improved accuracy of MS2 identification due to MetMatch's MS1 accuracy in formula matching and in dealing with retention time differentiable isobars.
 
-##Installation
+##Installation (Source currently not available--7/21/2016--check back soon)
 After downloading the compressed archive (tar.gz), install with R as you would any other package:
 
 ```
@@ -20,20 +20,20 @@ For those wanting to dive in, the following commands should allow you to quickly
 formulae = read.delim("formulae.txt")
 
 #2. Read the TFL (database)
-data(TF)
+data(TFL)
 
 #3. run XCMS/CAMERA:
 wd = "<Path to your folder containing the mzxml file(s)>"
 run.CAMERA(wd)
 
 #4. Run MetMatch!
-run.metmatch(wd,DB)
+run.metmatch(wd,TFL)
 
 #5. Open your results files!
 ```
 
 ###2. Target Feature Library
-Target Feature Libraries (TFL) are the samplewise specific databases (herein called a search-space) and are one of the two required inputs for MetMatch.  Building a TFL can take several minutes to hours depending on the number of formulae, but is completed once for a list of unique formulae expected to be encountered in a sample.  For our example, formulae are derived from the Human metabolome database and LipidMaps, since our samples are derioved from a human cell line.  Additionally, once the TFL is built, the user has the option of saving the TFL to text for later rapid loading.  Routines can be scripted to remove or add TFL entries simply by running the build command, writing to text the new TFL entries, and inserting these entries into the searchspace text file.
+Target Feature Libraries (TFL) are the samplewise specific databases (herein called a search-space) and are one of the two required inputs for MetMatch.  Building a TFL can take up to several minutes depending on the number of formulae, but is completed once for a list of unique formulae expected to be encountered in a sample.  For our example, formulae are derived from the Human metabolome database and LipidMaps, since our samples are derived from a human cell line.  Additionally, once the TFL is built, the user has the option of saving the TFL to a text format file for later rapid loading.  Routines can be scripted to remove or add TFL entries simply by running the build command, writing to text the new TFL entries, and inserting these entries into the searchspace text file.
 
 #####Building the TFL
 A list of formulae is required to initiate the TFL building proces. After reading formulae, a simple command is provided to clean the formulae of unwanted entries (deuterated, containing R groups, single atom entries, etc...). We then initiate the TFL build. k is the expected maximum number of isotopes (we use 6).  Before running this, please realize that a precompiled searchspace has been built to save the user time (see below):
@@ -41,14 +41,14 @@ A list of formulae is required to initiate the TFL building proces. After readin
 ```
 formulae = read.delim("formulae.txt")
 formulae = clean.formulae(formulae)
-TFL = build.TFL.emass(k=6,formulae,nCore=64)
+TFL = build.DB.emass(k=6,formulae,nCore=64)
 ```
 #####Writing TFLs and Reading pre-built TFLs}
 Two simple commands are provided to write and read the TFL:
 
 ```
-write.TFL(file="TFL.txt")
-read.TFL(file="TFL.txt")
+write.DB(file="TFL.txt")
+read.DB(file="TFL.txt")
 ```
 Or you can use our precompiled library (HMDB+Lipidmaps):
 ```
@@ -74,26 +74,26 @@ C3H10N2	74.08384	5	78.0911	0
 
 ###3. MS Data Preprocessing
 #####Peak finding with XCMS/CAMERA
-By this time in the data analysis, the user will preprocess data to find isotopic clusters (features).  It is recommended to use the ProteoWizard MSConvert.exe tool to convert to mzXML. The pipeline is run using mzXML formatted files, but it is assumed that anyformat compatible with XCMS can be used.  Once peak finding is completed, the resultant peaks are grouped into isotope clusters using CAMERA. The user is expected to have some working knwoledge of the settings in CAMERA.  The peaklists are written to a csv file and can be analyzed later with the MetMatch algorithm.  These steps by far are the most time consuming steps in the MetMatch pipeline.  We provide a wrapper function to perform this task.
+At this time in the data analysis, the user will preprocess data to find isotopic clusters (features).  It is recommended to use the ProteoWizard MSConvert.exe tool to convert your data to the mzXML format. The pipeline is run using mzXML formatted files, but it is assumed that anyformat compatible with XCMS can be used.  Once peak finding is completed, the resultant peaks are grouped into isotope clusters using CAMERA. The user is expected to have some working knwoledge of the settings in CAMERA, but default setting are provided which should be applicable to most QTOF instruments. The peaklists are written to a csv file and can be analyzed later with the MetMatch algorithm.  These steps by far are the most time consuming steps in the MetMatch pipeline.  We provide a wrapper function to perform this task.  Adapting MetMatch to other feature finding and isotope grouping software (eg vendor software) is in the works and will be released in sequential versions of the software package.  
 
 ```
 run.CAMERA(wd)
 ```
 
 ### 4. Performing Feature to Formula Matching (FFM) using the MetMatch search engine
-After data preprocessing, the features have been written to comma delimited format (.csv) and are ready to read and convert to a format that MetMatch can search. This is a simple, two step process: 1) read and convert the CAMERA output to a list of query features containing isotopic masses and intensities, and 2)Run the metmatch algorithm.  We provide a wrapper function to run these tasks.
-MetMatch requires the user to set the ppm and intensity tolerances.  The most important setting here is the mass setting.  To model delta mass and delta intensities correctly, use a wide enough mass tolerance to help model incorrect matches. FOr example, in QTOF data metabolites with mass error of less than 10ppm are routinely acquired, however we use a defualt 50ppm mass tolerance window.  Intensity tolerances are on a scale of 0-1, and the default setting of 0.5 will work for most data.  MetMatch takes as input the query list of experimental isotopes (Q), and the target feature library created earlier. Please see the manual for details on specific settings in the MetMatch function.
+After data preprocessing, the features have been written to comma delimited format (.csv) and are ready to read and convert to a format that MetMatch can search. This is a simple, two step process: 1) read and convert the CAMERA /annotated isotope  output to a list of query features containing isotopic masses and intensities, and 2) run the MetMatch algorithm.  We provide a wrapper function to run these tasks.
+MetMatch requires the user to set the ppm and intensity tolerances.  The most important setting here is the mass setting.  To model delta mass and delta intensities correctly, use a wide enough mass tolerance to help model the *incorrect* matches. For example, in QTOF data, metabolites with a mass error of less than 10ppm are routinely acquired, however we use a default *50ppm* mass tolerance window.  Intensity tolerances are on a *relative intensity* scale of 0-1, and the default setting of 0.5 will work for most data.  **MetMatch** takes as input the query list of experimental isotopes (Q), and the target feature library created earlier. Please see the manual for details on specific settings in the MetMatch function.
 
 ```
 wd = <relative or full path to directory of experimental files>
 run.metmatch(wd,TFL)
 ```
 ### 5. Estimating the FFM error rate
-In the metmatch algorithm, the FFM error rate is computed by running the "decoy" option for either the run.metmatch  wrapper function, or within the metmatch function itself.  This biggest disadvantage is that the decoy option takes longer to run (~3 times longer than without the "decoy" option).   The advantage, however, is similar to a decoy peptide database in it's usage with proteomics MSMS search engines, metmatch also utilizes a similar approach to aid determining the cutoff "FFM score" that will be computed for each sample.   This method is adaptive to the quality of the sample's features, and consistent in producing cutoffs (ideal minimum scores) between similar samples. 
+In the MetMatch algorithm, the FFM error rate is computed by running the *"decoy"* option for either the run.metmatch  wrapper function, or within the MetMatch function itself.  This biggest disadvantage for this step is that the decoy option takes longer to run (~3 times longer than without the "decoy" option).   The advantage, however, is similar to a decoy peptide database in it's usage with proteomics MSMS search engines, MetMatch also utilizes a similar approach to aid determining the cutoff "FFM score" that will be computed for each sample.   This method is adaptive to the quality of the sample's features, and consistent in producing cutoffs (ideal minimum scores) between similar samples. 
 #####Decoy Feature Library Contruction
-The DFL is constructed automatically by learning the correct parameters for DFL construction from the samples themselves.  Specifically, models computed from the isotope delta masses and intensities are used to parameterize the DFL contruction.   More details can be found in the manuscript online methods (coming soon). We chose to construct 5 DFL entries per TFL entry to increase the precision in computing the threshold, especially since the TFL database is only ~13000 entries small. 
+The DFL is constructed automatically by learning the correct parameters for DFL construction from the samples themselves.  Specifically, models computed from the isotope delta masses and intensities are used to parameterize the DFL contruction.   More details can be found in the manuscript online methods (pending). We chose to construct 5 DFL entries per TFL entry to increase the precision in computing the threshold, especially since the TFL database is only ~13000 entries small, and this helps to accurize the detected score cutoff. 
 #####Determining the cutoff score
-The minimum score required or "trusted" by the experimentor is computed within the metmatch algorithm.   Just simply use the "decoy" option and a small text file with the extension ".cutoff.txt" will be produced for each file searched in your working directory.   The results will include scores for FDR of 1 and 5%, and are plotted in the diagnostic plots showing the distribution of scores (see below).  Typically, a 5% FDR has been indicative of a good quality FFM.
+The minimum score required or "trusted" by the experimentor is computed within the MetMatch algorithm.   Just simply use the "decoy" option and a small text file with the extension ".cutoff.txt" will be produced for each file searched in your working directory.   The results will include scores for FDR of 1 and 5%, and are plotted in the diagnostic plots showing the distribution of scores (see below).  Typically, a 5% FDR has been indicative of a good quality FFM.
 To compute your FDR, simply run the decoy option:
 For all files in a working directory:
 ```
@@ -103,12 +103,13 @@ run.metmatch(wd,TFL,run.type="decoy")
 
 Or optionally, for advanced users who want fine grain control over the metmatch algorithm:
 ```
+?metmatch  # look at the help file for options.
 metmatch = function(Q.data,TFL,run.type = "decoy",out.file.name)
 ```
 -->Cutoff scores produced will be in the cutoffs.txt file.
 
 ### 6. Interpreting search results
-MetMatch produces a table of results together with a plot or results for visualizing the delta models and the final score.  The tables are fairly comprehensive, however the most important columns to the typical experimentor will be the "query" ion, mz, and retention time, assigned formula, and the relevant score.  These tables are indicated with the extenstion ".metab.csv".   
+MetMatch produces a table of results together with a plot or results for visualizing the delta models and the final score.  The tables are fairly comprehensive. However the most important columns to the typical experimentor will be the "query" ion, mz, and retention time, assigned formula, and the relevant score.  These tables are indicated with the extenstion ".metab.csv".   At this point, the user maps the best formula to all possible compound names in their database, and is at an advantage if they have coacquired MS2 data.
 #####Tables
 Below is 3 lines from the top hits of a search result contained in a "metab.csv" file.   Q stands for "query" or the experimental ion matched against the TFL.   The type of ion detected, it's mass and rt and total intensity is copied to the search output.  The FFMs are sometimes several per ion, with the highest scoring FFM presented as the *best.hit .  The FFMs DB indexes and formulae are shown, and are followed by the scores.  The independent mass and intensity scores as well as the final scores are shown. 
 
@@ -119,7 +120,7 @@ index.Q | ion.Q | exactMass.Q | rt.Q | intensity | index.DB | hit.DB | ... | sco
 1844|M+H|792.5528487|89.386|15171.64471|1999;2057;2948;11015|C45H78NO8P;C46H82NO7P;C42H82NO10P;C44H74NO9P|...|11.93744504|6.768302973|18.70574801|C45H78NO8P
 
 #####Plots
-Four diagnostic plots are included. The first two (A and B) are plots of the delta isotope masses and delta isotope intensities from the entire sample.   These have a Laplace distribution fit to them.  They indicate nearest the peak which FFMs are likely "good" FFMs versus the rest which are bad. The log ratio score for each FFM is computed from this distribution over the mean of the remaining "bad" delta masses and intensities.   The third plot (C) shows a heatmap distribution of these scores, which when added become the feature's final score. The final distribution of scores (D) for a sample are shown.  When the "decoy" option is run, the decoy FFMs (indicating a false hit) are shown as "+"'s in plot C and are used to compute the FDR and derive a cutoff score for 1 and 5% FDR (red dash lines in plot D).
+Four diagnostic plots are included. The first two (A and B) are plots of the delta isotope masses and delta isotope intensities from the entire sample.   These have a model distribution fit to them and indicate nearest the peak of the model (blue line) which FFMs are likely "good" FFMs versus the rest of which are bad. The log ratio score for each FFM is computed from this distribution over the mean of the remaining "bad" delta masses and intensities.   The third plot (C) shows a heatmap distribution of these scores, which when added together become the feature's final score. The final distribution of scores (D) for a sample are shown.  When the "decoy" option is run, the decoy FFMs (indicating a false hit) are shown as "+"'s in plot C and are used to compute the FDR and derive a cutoff score for 1 and 5% FDR (red dash lines in plot D).   
  
  
 Plot A. Delta Masses  | Plot B. Delta Intensities
@@ -133,11 +134,11 @@ Plot C.  Mass Scores vs. Intensity Scores|Plot D. Distribution of FFM scores wit
 
 
 ### 7. Aligning results from multiple samples  
-In our study, we searched multiple samples which were aligned together based on their FFM and retention time, and extraction type. This was because all were derived from the same cell line (HEK293).  The user will want to keep alignment of the data in groups determined by the extraction type and type of chromatographic separation completed in the experiment (eg. do NOT align C18 data with HILIC data).  We provide several postprocessing functions and a wrapper function to align your data.   The user will want some knowledge of the reproducibility of their chromatographic separations and subsequent MS data runs.  This will enable correct selection of the RT window for clustering of FFMs from the multiple samples.  The result of this workflow is a table of  aligned FFMS, and there is also a ploting function to visualiZe the distribution of scores and intensities in a heatmap.
+In our study, we searched multiple samples which were aligned together based on their FFM and retention time (using a hierarchial clustering method). Different extraction types are clustered separately. This was because all were derived from the same cell line (HEK293), but different chromatographies were used (C18 versus HILIC).  Hence the user will want to keep alignment of the data in groups determined by the extraction type and type of chromatographic separation completed in the experiment (eg. do NOT align C18 data with HILIC data).  We provide several postprocessing functions and a wrapper function to align your data.   The user will want some knowledge of the reproducibility of their chromatographic separations and subsequent MS data runs, and this is the necessary work required of any user in any good mass spectrometry experiment.  This will enable correct selection of the RT window for clustering of FFMs from the multiple samples.  The result of this workflow is a table of  aligned FFMs, and there is also a ploting function to visualiZe the distribution of scores and intensities in a heatmap.
 Alinging samples is easy, with just one set of commands:
 ```
 wd = <relative or full path to .matab.csv files>
-results = align.MetMatchResults(wd,maxRtDiff=20,cutoff=1,N=1)
+results = align.MetMatchResults(wd,maxRtDiff=60,cutoff=1,N=1) #cutoff: minimum MetMatch score (see if lower scoring FFMs align with higher scoring ones. N: minimum number of replicates required for the observed FFM for clustering.
 ```
 These command produce the tabel of merged scores and intensities between samples: 
 ##### Table of merged data:
@@ -152,7 +153,7 @@ ID|M|rt|int|cv.int|formula|score|cv.score|n.samples|r001.metab.csv|r002.metab.cs
 863.5645@49.022|863.5645|49.022|41230.9|4.73|C45H83O13P|16.08|59.99|9|41450.61353|41800.97931|45552.54431|...
 
 #### HeatMap of merged data:
-Finally, you can visualize the relative distribution of intensities and scores as aligned using the previous functions.  The rest is up to the user/scientist to determine how best to analyze their data further, but metmatch to this point provides accurate Feature to Formulae matching.  
+Finally, you can visualize the relative distribution of intensities and scores as aligned using the previous functions.  The rest is up to the user/scientist to determine how best to analyze their data further, but MetMatch to this point provides accurate Feature to Formulae matching.  
 
 To plot the features using the FFM information:
 ```
@@ -166,7 +167,7 @@ Aligned Scores|Aligned Intensities
 
 
 #CONCLUSION
-MetMatch provides feature to formula matching in a global analysis framework.   The algorithm provides rapid formulae assignments per sample.  Each feature in the sample is interrogated independently (no prior alingments and analysis like current tools) and are aligned after the MS1 search.   The FDR is estimated per sample using a novel application of a decoy database aiding the user in selecting a minimum cutoff score.
+MetMatch provides feature to formula matching in a global analysis framework.   The algorithm provides rapid formulae assignments per sample.  In replicate mass spectrometry experiments, each sample is independently and rapidly searched for correct formula matching (no prior feature alignments necessary like current tools) and are aligned after the MS1 search.   The FDR is estimated per sample using a novel application of a decoy database aiding the user in selecting a minimum cutoff score.
 
 
 

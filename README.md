@@ -44,7 +44,7 @@ formulae = read.delim("formulae.txt")
 formulae = clean.formulae(formulae)
 TFL = build.DB.emass(k=6,formulae,nCore=64)
 ```
-#####Writing TFLs and Reading pre-built TFLs}
+#####Writing TFLs and reading pre-built TFLs}
 Two simple commands are provided to write and read the TFL:
 
 ```
@@ -75,7 +75,7 @@ C3H10N2	74.08384	5	78.0911	0
 
 ###3. MS Data Preprocessing
 #####Peak finding with XCMS/CAMERA
-At this time in the data analysis, the user will preprocess data to find isotopic clusters (features).  It is recommended to use the ProteoWizard MSConvert.exe tool to convert your data to the mzXML format. The pipeline is run using mzXML formatted files, but it is assumed that anyformat compatible with XCMS can be used.  Once peak finding is completed, the resultant peaks are grouped into isotope clusters using CAMERA. The user is expected to have some working knwoledge of the settings in CAMERA, but default setting are provided which should be applicable to most QTOF instruments. The peaklists are written to a csv file and can be analyzed later with the MetMatch algorithm.  These steps by far are the most time consuming steps in the MetMatch pipeline.  We provide a wrapper function to perform this task.  Adapting MetMatch to other feature finding and isotope grouping software (eg vendor software) is in the works and will be released in sequential versions of the software package.  
+At this time in the data analysis, the user will preprocess data to find isotopic clusters (features).  It is recommended to use the ProteoWizard MSConvert.exe tool to convert your data to the mzXML format. The pipeline is run using mzXML formatted files, but it is assumed that any format compatible with XCMS can be used.  Once peak finding is completed, the resultant peaks are grouped into isotope clusters using CAMERA. The user is expected to have some working knwoledge of the settings in CAMERA, but default setting are provided which should be applicable to most QTOF instruments. The peaklists are written to a csv file and can be analyzed later with the MetMatch algorithm.  These steps by far are the most time consuming steps in the MetMatch pipeline.  We provide a wrapper function to perform this task.  Adapting MetMatch to other feature finding and isotope grouping software (eg vendor software) is in the works and will be released in sequential versions of the software package.  
 
 ```
 run.CAMERA(wd)

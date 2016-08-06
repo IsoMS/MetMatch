@@ -9,7 +9,7 @@ MetMatch is a MS1 search engine for global mass spectrometry feature to formula 
 #####1. Emass for building the TFL (or you could just use the precompiled MS1 library, read below)
 Emass can be downloaded from here:<br />
 http://www.helsinki.fi/science/lipids/software.html<br />
-The Isotope.DAT file and the emass.exe files should be placed in your (setwd("<PATH>") working directory.
+The Isotope.DAT file and the emass.exe files should be placed in your setwd("<PATH>") working directory.
 #####2. R packages CAMERA,MASS, RColorBrewer, and fields-->
 ```
 install.packages(c("MASS","RColorBrewer","fields"))

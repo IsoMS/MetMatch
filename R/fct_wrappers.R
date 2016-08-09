@@ -71,13 +71,19 @@ run.CAMERA = function(wd,method="massifquant",prefilter=c(3,500),peakwidth=c(3,4
 #' @param nCore
 #' @param score.method
 #' @param run.type
+#' @param N  Number of samples in the CAMERA file....typically N=1, but user must enter the value if using an XCMS aligned table of results
 #' @param ...
 #'
 #' @return
 #' @export
 #'
 #' @examples
-run.metmatch = function(wd,DB,save=TRUE,score.method="best",run.type="nodecoy",score.type = "both"){
+run.metmatch = function(wd,DB,save=TRUE,score.method="best",run.type="nodecoy",score.type = "both",N=NULL){
+   if(is.null(N)){
+      print("Exiting.   You must enter N=# of samples in the CAMERA files\n(Typically N=1, but N>1 if using XCMS aligned peaklists)\n")
+      quit;
+   }
+    
 
    #mclapply = getSys()
    startwd = getwd()
@@ -91,7 +97,7 @@ run.metmatch = function(wd,DB,save=TRUE,score.method="best",run.type="nodecoy",s
    res = list()
    i = 1
    for (cf in camFiles) {
-      Q = convert.camera.file(cf,1)
+      Q = convert.camera.file(cf,N)
       res[[i]] = metmatch(Q,DB,score.method=score.method,run.type=run.type,score.type=score.type,out.file.name=sampleNames[i])
       i=i+1
    }

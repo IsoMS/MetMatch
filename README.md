@@ -29,20 +29,17 @@ install.packages(path_to_file, repos = NULL, type="source")
 ###1. Quickstart
 For those wanting to dive in, the following commands should allow you to quickly analyze a single mzxml file.  MetMatch was developed with a replicate series of MS samples, and users are encouraged to read further for analyzing replicate sets of MS metabolomics data.
 ```
-#1. Read the list of formulae to build the TFL
-formulae = read.delim("formulae.txt")
-
-#2. Read the TFL (database)
+#1. Read the TFL (database)
 data(TFL)
 
-#3. run XCMS/CAMERA:
+#2. run XCMS/CAMERA:
 wd = "<Path to your folder containing the mzxml file(s)>"
 run.CAMERA(wd)
 
-#4. Run MetMatch!
+#3. Run MetMatch!
 run.metmatch(wd,TFL)
 
-#5. Open your results files!
+#4. Open your results files!
 ```
 
 ###2. Target Feature Library

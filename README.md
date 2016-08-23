@@ -51,7 +51,7 @@ A list of formulae is required to initiate the TFL building proces. After readin
 ```
 formulae = read.delim("formulae.txt")
 formulae = clean.formulae(formulae)
-TFL = build.DB.emass(k=6,formulae,nCore=64)
+TFL = build.DB.emass(k=6,formulae)
 ```
 #####Writing TFLs and reading pre-built TFLs}
 Two simple commands are provided to write and read the TFL:
@@ -144,8 +144,8 @@ Plot C.  Mass Scores vs. Intensity Scores|Plot D. Distribution of FFM scores wit
 
 
 ### 7. Aligning results from multiple samples  
-In our study, we searched multiple samples which were aligned together based on their FFM and retention time (using a hierarchial clustering method). Different extraction types are clustered separately. This was because all were derived from the same cell line (HEK293), but different chromatographies were used (C18 versus HILIC).  Hence the user will want to keep alignment of the data in groups determined by the extraction type and type of chromatographic separation completed in the experiment (eg. do NOT align C18 data with HILIC data).  We provide several postprocessing functions and a wrapper function to align your data.   The user will want some knowledge of the reproducibility of their chromatographic separations and subsequent MS data runs, and this is the necessary work required of any user in any good mass spectrometry experiment.  This will enable correct selection of the RT window for clustering of FFMs from the multiple samples.  The result of this workflow is a table of  aligned FFMs, and there is also a ploting function to visualiZe the distribution of scores and intensities in a heatmap.
-Alinging samples is easy, with just one set of commands:
+In our study, we searched multiple samples which were aligned together based on their FFM and retention time (using a hierarchial clustering method). Different extraction types are clustered separately. This was because all were derived from the same cell line (HEK293), but different chromatographies were used (C18 versus HILIC).  Hence the user will want to keep alignment of the data in groups determined by the extraction type and type of chromatographic separation completed in the experiment (eg. do NOT align C18 data with HILIC data).  We provide several postprocessing functions and a wrapper function to align your data.   The user will want some knowledge of the reproducibility of their chromatographic separations and subsequent MS data runs, and this is the necessary work required of any user in any good mass spectrometry experiment.  This will enable correct selection of the RT window for clustering of FFMs from the multiple samples.  The result of this workflow is a table of  aligned FFMs, and there is also a ploting function to visualize the distribution of scores and intensities in a heatmap.
+Aligning samples is easy, with just one set of commands:
 ```
 wd = <relative or full path to .matab.csv files>
 results = align.MetMatchResults(wd,maxRtDiff=60,cutoff=1,N=1) #cutoff: minimum MetMatch score (see if lower scoring FFMs align with higher scoring ones. N: minimum number of replicates required for the observed FFM for clustering.

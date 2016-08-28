@@ -6,7 +6,7 @@
 MetMatch is a MS1 search engine for global mass spectrometry feature to formula matching, developed by Scott Walmsley,PhD (University of Colorado-Anschutz Medical School) and Hyungwon Choi,PhD (National University of Singapore School of Public Heatlh).  MetMatch takes as input a user supplied list of formula and annotated features produced from the XCMS/CAMERA feature finding  and isotope annotation software.  Included are methods to build a target feature library (TFL), preprocessing routines, running the MetMatch algorithm, and postprocessing routines. In this vignette you will find a generic workflow for analyzing the data produced from a replicate mass spectrometry experiment.  In replicate mass spectrometry experiments, each sample is independently and rapidly searched for correct formula matching (no prior feature alignments necessary like current tools) and are aligned after the MS1 search.   The FDR is estimated per sample using a ***novel application of a decoy database*** aiding the user in selecting a minimum cutoff score. Additionally, this protocol can be run for MS1 data acquired in MS1 only mode, or for simultaneous acquired MS1 and MS2 data (MetMatch only searched the MS1 data) as demonstrated in our co-submitted MetaboDIA software framework (Genbo et.al, manuscript pending). In this approach, the coacquired MS2 structural data were demonstrated to have improved accuracy of MS2 identification due to MetMatch's MS1 accuracy in formula matching and in dealing with retention time differentiable isobars.
 
 ## Framework
-
+<img src="/images/framework.png" width="800px"/>
 ## Requirements
 #####1. Emass for building the TFL (or you could just use the precompiled MS1 library, read below)
 Emass can be downloaded from here:<br />

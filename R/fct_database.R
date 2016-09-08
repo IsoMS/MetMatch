@@ -35,7 +35,7 @@ run.emass = function(formula, maxPks = 6) {
    masses = array();
    intensities = array();
 
-   emass = shell(shQuote("emass.exe "),input = paste(formula,",1"),intern = T)
+   emass = shell(shQuote("emass "),input = paste(formula,",1"),intern = T)
 
 
    for (i in 2:length(emass)) {

@@ -79,7 +79,7 @@ run.emass = function(formula, maxPks = 6) {
 #' @export
 #' @return The target feature library of emass predicted isotopic mass and intensities in DB object form.
 build.DB.emass = function(k,formula) {
-  mclapply = getSys();
+  #mclapply = getSys();
   tmp = lapply(formula, function(x)
     run.emass(as.character(x),k))
 

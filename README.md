@@ -39,7 +39,7 @@ wd = "<Path to your folder containing the mzxml file(s)>"
 run.CAMERA(wd)
 
 #3. Run MetMatch!
-run.metmatch(wd,TFL)
+run.metmatch(wd,TFL,N=1)
 
 #4. Open your results files!
 ```
@@ -98,7 +98,7 @@ MetMatch requires the user to set the ppm and intensity tolerances.  The most im
 
 ```
 wd = <relative or full path to directory of experimental files>
-run.metmatch(wd,TFL)
+run.metmatch(wd,TFL,N=1)
 ```
 ### 5. Estimating the FFM error rate
 In the MetMatch algorithm, the FFM error rate is computed by running the *"decoy"* option for either the run.metmatch  wrapper function, or within the MetMatch function itself.  This biggest disadvantage for this step is that the decoy option takes longer to run (~3 times longer than without the "decoy" option).   The advantage, however, is similar to a decoy peptide database in it's usage with proteomics MSMS search engines, MetMatch also utilizes a similar approach to aid determining the cutoff "FFM score" that will be computed for each sample.   This method is adaptive to the quality of the sample's features, and consistent in producing cutoffs (ideal minimum scores) between similar samples. 
@@ -110,13 +110,13 @@ To compute your FDR, simply run the decoy option:
 For all files in a working directory:
 ```
 wd = <relative or full path to files>
-run.metmatch(wd,TFL,run.type="decoy")
+run.metmatch(wd,TFL,run.type="decoy",N=1)
 ```
 
 Or optionally, for advanced users who want fine grain control over the metmatch algorithm:
 ```
 ?metmatch  # look at the help file for options.
-metmatch = function(Q.data,TFL,run.type = "decoy",out.file.name)
+metmatch(Q.data,TFL,run.type = "decoy",out.file.name)
 ```
 -->Cutoff scores produced will be in the cutoffs.txt file.
 

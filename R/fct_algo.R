@@ -604,7 +604,7 @@ compute.FDR = function(dec.scored.data,dec.db.data,score.method){
 #'
 #' @keywords internal
 compute.thresholds = function(dec.scored.data){
-   cuts = c(0.01,0.05)
+   cuts =seq(0.001,0.20,by=0.001)
 
    cutoffs = sapply(cuts,function(x)  min(dec.scored.data$score.Q[which(dec.scored.data$FDR<x)]))
    names(cutoffs) = paste("alpha",cuts,sep="_")

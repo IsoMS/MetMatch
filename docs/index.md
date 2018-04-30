@@ -1,5 +1,5 @@
 
-<img src="/images/logo.png" width="600px"/>
+<img src="images/logo.png" width="600px"/>
 
 ##MS1 Metabolomics Global Search Engine for Feature to Formula Matching 
 #####UPDATE: *manuscripts* have been submitted! 
